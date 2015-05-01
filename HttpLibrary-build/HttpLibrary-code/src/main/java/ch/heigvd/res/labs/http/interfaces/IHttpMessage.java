@@ -5,16 +5,20 @@
  */
 package ch.heigvd.res.labs.http.interfaces;
 
+import java.util.List;
 import java.util.Map;
+
 
 /**
  *
  * @author zoruk
  */
 public interface IHttpMessage {
-    public Map<String, IHttpHeader> getHeaders();
-    public IHttpHeader getHeader(String field);
+    public Map<String, List<IHttpHeader>> getHeaders();
+    public List<IHttpHeader> getHeader(String field);
     public byte[] getBody();
     public int getContentLength();
     public String getProtocolVersion();
+    public void addHeader(IHttpHeader header);
+
 }

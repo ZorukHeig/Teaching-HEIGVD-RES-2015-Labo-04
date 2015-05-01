@@ -5,10 +5,7 @@ import ch.heigvd.res.labs.http.interfaces.IHttpRequest;
 import ch.heigvd.res.labs.http.interfaces.IHttpResponse;
 import ch.heigvd.res.labs.http.interfaces.MalformedHttpResponseException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.URI;
 
@@ -25,20 +22,20 @@ public class HttpClient implements IHttpClient {
             return null;
         }
 
+        request.addHeader(new HttpHeader("Connection", "Close"));
+
         PrintWriter writer = new PrintWriter(socket.getOutputStream(),
                 true);
 
-        System.out.println(request.toString());
         writer.write(request.toString());
 
         writer.flush();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                socket.getInputStream()));
 
+        HttpBufferedInputStream reader = new HttpBufferedInputStream(socket.getInputStream());
 
-        HttpResponse response = new HttpResponse();
-        response.parse(reader);
+        HttpResponse response = new HttpResponse(reader);
+        socket.close();
         return response;
     }
 }

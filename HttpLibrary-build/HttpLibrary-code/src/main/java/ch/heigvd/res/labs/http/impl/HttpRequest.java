@@ -5,6 +5,7 @@ import ch.heigvd.res.labs.http.interfaces.IHttpRequest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -61,9 +62,10 @@ public class HttpRequest extends HttpMessage implements IHttpRequest {
                 .append(" ")
                 .append(getProtocolVersion())
                 .append("\n");
-        Map<String, IHttpHeader> headers = getHeaders();
-        for (IHttpHeader h : headers.values()) {
-            builder.append(h.format()).append("\n");
+        Map<String, List<IHttpHeader>> headers = getHeaders();
+        for (List<IHttpHeader> header : headers.values()) {
+            for (IHttpHeader h : header)
+                builder.append(h.format()).append("\n");
         }
         builder.append("\n");
         return builder.toString();

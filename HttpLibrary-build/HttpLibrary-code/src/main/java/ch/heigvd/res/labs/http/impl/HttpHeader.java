@@ -16,6 +16,17 @@ public class HttpHeader implements IHttpHeader {
         values = new ArrayList<>();
     }
 
+    public HttpHeader(String value) {
+        this();
+        String[] pair = value.split(":", 2);
+        pair[0] = pair[0].trim();
+        pair[1] = pair[1].trim();
+        this.name = pair[0];
+        String[] values = pair[1].split(",");
+        for (String s : values)
+            this.values.add(s);
+    }
+
     public HttpHeader(String name, String value) {
         this();
         this.name = name;
@@ -33,7 +44,9 @@ public class HttpHeader implements IHttpHeader {
 
     @Override
     public String[] getValues() {
-        return (String[])values.toArray();
+        String[] v = new String[values.size()];
+        for (int i = 0; i < v.length; ++i) v[i] = values.get(i);
+        return v;
     }
 
     @Override
